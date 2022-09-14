@@ -1,24 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react";
+import ListaMonstros from "./componentes/ListaMonstros";
+import ButtonLimpar from "./componentes/ButtonLimpar";
+// import dados from "./dados/dadosFake";
 
 function App() {
+
+  // const [dadosFake, setDadosFake] = useState(dados);
+  const [dados, setDados] = useState([]);
+  // const apagarDados = () => {setDadosFake([])};
+  const apagarDados = () => {setDados([])};
+
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/users")
+    .then((response) => response.json())
+    .then((dadosAPI) => setDados(dadosAPI.slice(0,5)))
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <main>
+      <section className="container">
+          <h1>{dados.length} Monstros</h1>
+          {/* sempre que for usar JS no HTML, tem que usar chaves! */}
+
+          <ListaMonstros dados={dados} />
+          
+          <ButtonLimpar apagarDados={apagarDados} />
+      </section>
+    </main>
   );
 }
 
